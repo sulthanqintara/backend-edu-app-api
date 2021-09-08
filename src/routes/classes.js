@@ -1,6 +1,7 @@
-const classRouter = require('express').Router();
-const classHandler = require('../handlers/classes');
+const classRouter = require("express").Router();
+const classHandler = require("../handlers/classes");
 
-classRouter.post('/', classHandler.addNewClass);
+/* http://localhost:8000/classes */
+classRouter.post("/", classHandler.addNewClass);
 
 module.exports = classRouter;
