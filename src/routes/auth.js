@@ -1,8 +1,10 @@
-const authRouter = require('express').Router();
+const authRouter = require("express").Router();
 
-const authHandler = require('../handlers/auth');
+const authHandler = require("../handlers/auth");
 
-authRouter.post('/signin', authHandler.signIn);
-authRouter.post('/register', authHandler.register);
+/* http://localhost:8000/auth */
+authRouter.post("/signin", authHandler.signIn);
+authRouter.post("/register", authHandler.register);
+authRouter.delete("/signout", authHandler.signOut);
 
 module.exports = authRouter;
