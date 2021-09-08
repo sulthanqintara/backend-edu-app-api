@@ -7,7 +7,16 @@ const addNewClass = (body) => new Promise((resolve, reject) => {
     return resolve(result);
   });
 });
+const getAllClasses = () => new Promise((resolve, reject) => {
+  const queryString = 'SELECT * FROM classes';
+  db.query(queryString, (error, result) => {
+    if (error) return reject(error);
+    return resolve(result);
+  });
+});
+
 
 module.exports = {
     addNewClass,
+    getAllClasses,
 }

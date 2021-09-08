@@ -8,6 +8,13 @@ const addNewClass = (req, res) => {
     .catch((err) => responseHelper.error(res, 500, err.message))
 }
 
+const getAllClasses = (req, res) => {
+    classModel.getAllClasses()
+    .then((data) => responseHelper.success(res, 201, data))
+    .catch((err) => responseHelper.error(res, 500, err.message))
+}
+
 module.exports = {
     addNewClass,
+    getAllClasses
 }
