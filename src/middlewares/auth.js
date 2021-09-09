@@ -1,3 +1,4 @@
+const db = require("../database/mysql");
 const jwt = require("jsonwebtoken");
 
 const responseHelper = require("../helpers/response");
