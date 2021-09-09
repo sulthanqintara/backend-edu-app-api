@@ -18,10 +18,12 @@ const signIn = ({ email, password }) => {
           username: result[0].username,
           email: result[0].email,
           phone: result[0].phone,
+          role_id: result[0].role_id,
         };
         const payload = {
           name: result[0].name,
           email,
+          role_id: result[0].role_id,
         };
         jwt.sign(
           payload,
