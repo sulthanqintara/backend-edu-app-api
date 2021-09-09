@@ -57,7 +57,43 @@ const signOut = (req) => {
   });
 };
 
+const forgotPassword = (body) => {
+  return new Promise((resolve, reject) => {
+    const { user } = body;
+    const array = new Uint16Array(1);
+    const randomNumber = Math.ceil(
+      window.crypto.getRandomValues(array)[0] / 10
+    );
+    const query = `INSERT INTO forgot_password (user, code) VALUES (? ,?)`;
+    db.query(query, [user, randomNumber], (err, result) => {
+      if (err) return reject(err);
+      return resolve("Verification Code Sent to Database");
+    });
+  });
+};
+
+const verifyCodeForgot = (body) => {
+  return new Promise((resolve, reject) => {
+    const { code } = body;
+    const getQuery = `SELECT * FROM forgot_password WHERE code = ?`;
+    db.query(getQuery, code, (err, result) => {
+      if (err) return reject(err);
+      if (!result.length) return reject(401);
+      const deleteQuery = `DELETE FROM forgot_password WHERE code = ?`;
+      db.query(deleteQuery, code, (err, result) => {
+        if (err) return reject(err);
+        return resolve("Code Valid");
+      });
+    });
+  });
+};
+
+const updateForgotPassword = (body) => {};
+
 module.exports = {
   signIn,
   signOut,
+  forgotPassword,
+  verifyCodeForgot,
+  updateForgotPassword,
 };
