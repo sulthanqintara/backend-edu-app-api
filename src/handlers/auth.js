@@ -6,9 +6,9 @@ const signIn = (req, res) => {
   const { body } = req;
   authModel
     .signIn(body)
-    .then((result) => responseHelper.success(res, 201, result))
+    .then((result) => responseHelper.success(res, 200, result))
     .catch((err) => {
-      if (error === 401)
+      if (err === 401)
         responseHelper.error(res, 401, "Invalid Email or Password!");
       else responseHelper.error(res, 500, err.message);
     });
