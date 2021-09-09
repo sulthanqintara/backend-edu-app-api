@@ -24,9 +24,9 @@ const getClassById = (id) => new Promise((resolve, reject) => {
   });
 });
 
-const updateClassById = (id) => new Promise((resolve, reject) => {
+const updateClassById = (body, id) => new Promise((resolve, reject) => {
   const queryString = `UPDATE classes SET ? WHERE id = ?`;
-  db.query(queryString, id, (error, result) => {
+  db.query(queryString, [body, id], (error, result) => {
     if (error) return reject(error);
     return resolve(result);
   });
