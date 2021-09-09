@@ -22,8 +22,8 @@ const getClassById = (req, res) => {
 }
 
 const updateClassById = (req, res) => {
-    const { params } = req;
-    classModel.updateClassById(params.id)
+    const { body, params } = req;
+    classModel.updateClassById(body, params.id)
     .then((data) => responseHelper.success(res, 201, data))
     .catch((err) => responseHelper.error(res, 500, err.message))
 }
