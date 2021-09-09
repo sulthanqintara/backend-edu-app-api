@@ -21,7 +21,7 @@ const checkToken = (req, res, next) => {
             return responseHelper.error(
               res,
               403,
-              "Token Expired, Silahkan Login Kembali"
+              "Token Invalid, Silahkan Login Terlebih Dahulu"
             );
         });
       } else {
@@ -41,6 +41,31 @@ const checkToken = (req, res, next) => {
   );
 };
 
+const authFacilitator = (req, res, next) => {
+  const token = req.token;
+  jwt.verify(token, process.env.SECRET_KEY, (err, payload) => {
+    if (err) return new Error(responseHelper.error(res, 401, err));
+    req.payload = payload;
+    console.log(payload);
+    if (payload.role_id !== 1)
+      return new Error(responseHelper.error(res, 403, "Not a Facilitator!"));
+    next();
+  });
+};
+
+const authUser = (req, res, next) => {
+  const token = req.token;
+  jwt.verify(token, process.env.SECRET_KEY, (err, payload) => {
+    if (err) return new Error(responseHelper.error(res, 401, err));
+    req.payload = payload;
+    if (payload.role_id !== 2)
+      return new Error(responseHelper.error(res, 403, "Not a User!"));
+    next();
+  });
+};
+
 module.exports = {
   checkToken,
+  authUser,
+  authFacilitator,
 };
