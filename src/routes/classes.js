@@ -9,7 +9,7 @@ classRouter.post(
   authMiddleware.authFacilitator,
   classHandler.addNewClass
 );
-classRouter.get("/", classHandler.getAllClasses);
+classRouter.get("/", classHandler.getClasses);
 classRouter.get("/:id", classHandler.getClassById);
 classRouter.patch(
   "/:id",
