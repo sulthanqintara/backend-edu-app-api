@@ -16,5 +16,6 @@ userRouter.patch(
   uploadMiddleware.upload.single("image"),
   userHandler.editUser
 );
+userRouter.get('/classes/:id', userHandler.getClassByUser);
 
 module.exports = userRouter;

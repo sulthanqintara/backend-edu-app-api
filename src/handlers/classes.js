@@ -40,5 +40,5 @@ module.exports = {
     getAllClasses,
     getClassById,
     updateClassById,
-    deleteClass
+    deleteClass,
 }

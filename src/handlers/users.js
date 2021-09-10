@@ -31,8 +31,16 @@ const getUserById = (req, res) => {
     });
 };
 
+const getClassByUser = (req, res) => {
+  const { params } = req;
+  userModel.getClassByUser(params.id)
+  .then((data) => responseHelper.success(res, 201, data))
+  .catch((err) => responseHelper.error(res, 500, err.message))
+}
+
 module.exports = {
   updatePassword,
   editUser,
   getUserById,
+  getClassByUser,
 };
