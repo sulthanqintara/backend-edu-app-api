@@ -102,9 +102,20 @@ const getUserById = (query, hostname) => {
   });
 };
 
+const getClassByUser = (id) =>
+  new Promise((resolve, reject) => {
+    const queryString = `SELECT u.name AS "student_name", r.name AS "role", c.name AS "course_name" FROM users u JOIN user_class uc ON u.id = uc.user_id JOIN classes c ON uc.class_id = c.id JOIN roles r ON u.role_id = r.id WHERE uc.user_id = ?`;
+    db.query(queryString, id, (error, result) => {
+      if (error) return reject(error);
+      return resolve(result);
+    });
+  });
+
+
 module.exports = {
   createNewUser,
   updatePassword,
   editUser,
   getUserById,
+  getClassByUser,
 };
