@@ -1,12 +1,14 @@
 const classRouter = require("express").Router();
 const classHandler = require("../handlers/classes");
 const authMiddleware = require("../middlewares/auth");
+const uploadMiddleware = require("../middlewares/upload");
 
 /* http://localhost:8000/classes */
 classRouter.post(
   "/",
   authMiddleware.checkToken,
   authMiddleware.authFacilitator,
+  uploadMiddleware.upload.single("image"),
   classHandler.addNewClass
 );
 classRouter.post(
