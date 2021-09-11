@@ -9,6 +9,12 @@ classRouter.post(
   authMiddleware.authFacilitator,
   classHandler.addNewClass
 );
+classRouter.post(
+  "/apply",
+  authMiddleware.checkToken,
+  authMiddleware.authUser,
+  classHandler.applyNewClass
+);
 classRouter.get("/", classHandler.getClasses);
 classRouter.get("/:id", classHandler.getClassById);
 classRouter.patch(

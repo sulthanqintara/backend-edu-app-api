@@ -9,6 +9,14 @@ const addNewClass = (req, res) => {
     .catch((err) => responseHelper.error(res, 500, err.message));
 };
 
+const applyNewClass = (req, res) => {
+  const { body } = req;
+  classModel
+    .applyNewClass(body)
+    .then((data) => responseHelper.success(res, 201, data))
+    .catch((err) => responseHelper.error(res, 500, err.message));
+};
+
 const getClasses = (req, res) => {
   const { query, hostname } = req;
   classModel
@@ -56,6 +64,7 @@ const deleteClass = (req, res) => {
 
 module.exports = {
   addNewClass,
+  applyNewClass,
   getClasses,
   getClassById,
   updateClassById,
