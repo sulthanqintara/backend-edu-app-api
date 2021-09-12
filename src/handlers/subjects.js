@@ -35,11 +35,18 @@ const deleteSubject = (req, res) => {
     .catch((err) => responseHelper.error(res, 500, err.message))
 }
 
+const addScoring = (req, res) => {
+    const {body} = req;
+    subjectModel.addScoring(body)
+    .then((data) => responseHelper.success(res, 201, data))
+    .catch((err) => responseHelper.error(res, 500, err.message))
+}
 
 module.exports = {
     addNewSubject,
     getAllSubjects,
     getSubjectById,
     updateSubjectById,
-    deleteSubject
+    deleteSubject,
+    addScoring
 }

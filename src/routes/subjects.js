@@ -9,6 +9,7 @@ subjectRouter.post(
   authMiddleware.authFacilitator,
   subjectHandler.addNewSubject
 );
+subjectRouter.post("/scoring", authMiddleware.checkToken, authMiddleware.authFacilitator, subjectHandler.addScoring);
 subjectRouter.get("/", subjectHandler.getAllSubjects);
 subjectRouter.get("/:id", subjectHandler.getSubjectById);
 subjectRouter.patch(
@@ -23,5 +24,6 @@ subjectRouter.delete(
   authMiddleware.authFacilitator,
   subjectHandler.deleteSubject
 );
+
 
 module.exports = subjectRouter;
