@@ -122,6 +122,18 @@ const deleteClass = (id) =>
     });
   });
 
+const getProgressByUser = (query) => {
+  return new Promise((resolve, reject) => {
+    const user_id = query?.user_id ? query.user_id : 0;
+    const class_id = query?.class_id ? query.class_id : 0;
+    const queryString = `SELECT COUNT(*) FROM scoring sc JOIN users u ON sc.user_id = u.id JOIN subjects su ON sc.subject_id = su.id WHERE sc.user_id = ? AND su.class_id = ?`;
+    db.query(queryString, [user_id, class_id], (err, result) => {
+      if (err) return reject(error);
+      return resolve(result);
+    })
+  })
+}
+
 module.exports = {
   addNewClass,
   applyNewClass,
@@ -129,4 +141,5 @@ module.exports = {
   getClassById,
   updateClassById,
   deleteClass,
+  getProgressByUser,
 };
