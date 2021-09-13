@@ -9,8 +9,23 @@ const addNewSubject = (req, res) => {
 }
 
 const getAllSubjects = (req, res) => {
+    // const { params } = req;
     subjectModel.getAllSubjects()
-    .then((data) => responseHelper.success(res, 201, data))
+    .then((result) => responseHelper.success(res, 201, result))
+    .catch((err) => responseHelper.error(res, 500, err.message))
+}
+
+const getAverageScore = (req, res) => {
+    const { query } = req;
+    subjectModel.getAverageScore(query)
+    .then(({scResult, avgResult}) => 
+    {
+        const allResult = {
+            scResult,
+            avgResult
+        }
+        // console.log("allResult");
+        responseHelper.success(res, 201, allResult)})
     .catch((err) => responseHelper.error(res, 500, err.message))
 }
 
@@ -48,5 +63,6 @@ module.exports = {
     getSubjectById,
     updateSubjectById,
     deleteSubject,
-    addScoring
+    addScoring,
+    getAverageScore
 }

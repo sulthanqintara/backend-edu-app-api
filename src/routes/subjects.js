@@ -10,8 +10,11 @@ subjectRouter.post(
   subjectHandler.addNewSubject
 );
 subjectRouter.post("/scoring", authMiddleware.checkToken, authMiddleware.authFacilitator, subjectHandler.addScoring);
+subjectRouter.get("/scoring", subjectHandler.getAverageScore);
 subjectRouter.get("/", subjectHandler.getAllSubjects);
+
 subjectRouter.get("/:id", subjectHandler.getSubjectById);
+
 subjectRouter.patch(
   "/:id",
   authMiddleware.checkToken,
