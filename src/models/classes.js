@@ -43,19 +43,19 @@ const getClasses = (query, hostname) =>
   new Promise((resolve, reject) => {
     const keyword = query?.keyword ? query.keyword : "";
     const category_id = query?.category_id ? query.category_id : 0;
-    const level_id = query?.level_id ? query.level_id : 0;
+    const level_id = query?.level_id ? query.level_id : 3;
     const price = query?.price ? query.price : 9999999;
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const offset = limit * (page - 1);
-    const queryString = `SELECT * FROM classes WHERE name LIKE "%${keyword}%" AND category_id >= ? AND level_id >= ? AND pricing <= ? LIMIT ? OFFSET ?`;
+    const queryString = `SELECT * FROM classes WHERE name LIKE "%${keyword}%" AND category_id >= ? AND level_id <= ? AND pricing <= ? LIMIT ? OFFSET ?`;
     db.query(
       queryString,
       [category_id, level_id, price, limit, offset],
       (error, result) => {
         if (error) return reject(error);
         if (!result.length) return reject(404);
-        const queryCountTotal = `SELECT COUNT(id) AS total FROM classes WHERE name LIKE "%${keyword}%" AND category_id = ? AND level_id >= ? AND pricing <= ?`;
+        const queryCountTotal = `SELECT COUNT(id) AS total FROM classes WHERE name LIKE "%${keyword}%" AND category_id = ? AND level_id <= ? AND pricing <= ?`;
         db.query(
           queryCountTotal,
           [category_id, level_id, price],
