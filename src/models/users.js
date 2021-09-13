@@ -20,7 +20,7 @@ const createNewUser = (body) =>
           const qs = "INSERT INTO users SET ?";
           db.query(qs, userData, (err, result) => {
             if (err) return reject(err);
-            return resolve(result);
+            return resolve("User Registered");
           });
         });
       });
@@ -110,7 +110,6 @@ const getClassByUser = (id) =>
       return resolve(result);
     });
   });
-
 
 module.exports = {
   createNewUser,
