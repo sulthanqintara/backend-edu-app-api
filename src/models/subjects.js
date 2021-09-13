@@ -32,8 +32,6 @@ const getAverageScore = (query) => {
         const avgQs = `SELECT AVG (sc.score) FROM scoring sc JOIN subjects su ON sc.subject_id = su.id WHERE su.class_id = ? AND sc.user_id = ?`;
         db.query(avgQs, [class_id, user_id], (err, averageResult) => {
           if (err) return reject(err);
-          console.log(scoreResult, averageResult);
-          console.log(class_id, user_id);
           return resolve({
             scResult: scoreResult,
             avgResult: averageResult,
