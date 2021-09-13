@@ -102,13 +102,64 @@ const getUserById = (query, hostname) => {
   });
 };
 
-const getClassByUser = (id) =>
+const getClassByUser = (query, hostname) =>
   new Promise((resolve, reject) => {
-    const queryString = `SELECT u.name AS "student_name", r.name AS "role", c.name AS "course_name" FROM users u JOIN user_class uc ON u.id = uc.user_id JOIN classes c ON uc.class_id = c.id JOIN roles r ON u.role_id = r.id WHERE uc.user_id = ?`;
-    db.query(queryString, id, (error, result) => {
-      if (error) return reject(error);
-      return resolve(result);
-    });
+    const keyword = query?.keyword ? query.keyword : "";
+    const category_id = query?.category_id ? query.category_id : 0;
+    const level_id = query?.level_id ? query.level_id : 0;
+    const user_id = query?.user_id ? query.user_id : 0;
+    const price = query?.price ? query.price : 0;
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+    const offset = limit * (page - 1);
+    const queryString = `SELECT u.name AS student, c.name AS class_name, ca.name AS category, l.name AS level, c.pricing AS price FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE c.name LIKE "%${keyword}%" AND c.category_id >= ? AND c.level_id >= ? AND c.pricing >= ? AND uc.user_id >= ? LIMIT ? OFFSET ?`;
+    db.query(
+      queryString,
+      [category_id, level_id, price, user_id, limit, offset],
+      (error, result) => {
+        if (error) return reject(error);
+        if (!result.length) return reject(404);
+        const queryCountTotal = `SELECT COUNT(c.id) AS total FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id WHERE c.name LIKE "%${keyword}%" AND c.category_id = ? AND c.level_id >= ? AND c.pricing >= ? AND uc.user_id = ?`;
+        db.query(
+          queryCountTotal,
+          [category_id, level_id, price, user_id],
+          (err, totalResult) => {
+            if (err) return reject(err);
+            const totalData = totalResult[0].total;
+            const totalPage = Math.ceil(totalData / limit);
+            const baseURL = `http://${hostname}:8000/classes?limit=${limit}&`;
+            let urlPrevPage = baseURL;
+            let urlNextPage = baseURL;
+            query.keyword &&
+              ((urlPrevPage = urlPrevPage + `keyword=${keyword}&`),
+              (urlNextPage = urlNextPage + `keyword=${keyword}&`));
+            query.category_id &&
+              ((urlPrevPage = urlPrevPage + `category_id=${category_id}&`),
+              (urlNextPage = urlNextPage + `category_id=${category_id}&`));
+            query.level_id &&
+              ((urlPrevPage = urlPrevPage + `level_id=${level_id}&`),
+              (urlNextPage = urlNextPage + `level_id=${level_id}&`));
+            query.price &&
+              ((urlPrevPage = urlPrevPage + `price=${price}&`),
+              (urlNextPage = urlNextPage + `price=${price}&`));
+            query.user_id &&
+              ((urlPrevPage = urlPrevPage + `user_id=${user_id}&`),
+              (urlNextPage = urlNextPage + `user_id=${user_id}&`));
+            const prevPage = page > 1 ? urlPrevPage + `page=${page - 1}` : null;
+            const nextPage =
+              page < totalPage ? urlNextPage + `page=${page + 1}` : null;
+            return resolve({
+              result,
+              totalData,
+              totalPage,
+              currentPage: page,
+              prevPage,
+              nextPage,
+            });
+          }
+        );
+      }
+    );
   });
 
 module.exports = {

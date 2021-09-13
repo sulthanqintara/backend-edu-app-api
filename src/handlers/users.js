@@ -32,10 +32,23 @@ const getUserById = (req, res) => {
 };
 
 const getClassByUser = (req, res) => {
-  const { params } = req;
-  userModel.getClassByUser(params.id)
-  .then((data) => responseHelper.success(res, 201, data))
-  .catch((err) => responseHelper.error(res, 500, err.message))
+  const { query, hostname } = req;
+  userModel.getClassByUser(query, hostname)
+    .then(
+      ({ result, totalData, totalPage, currentPage, prevPage, nextPage }) => {
+        const info = {
+          data: result,
+          totalData,
+          totalData,
+          totalPage,
+          currentPage,
+          prevPage,
+          nextPage,
+        };
+        responseHelper.success(res, 201, info);
+      }
+    )
+    .catch((err) => responseHelper.error(res, 500, err));
 }
 
 module.exports = {
