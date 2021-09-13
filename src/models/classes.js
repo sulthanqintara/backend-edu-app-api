@@ -44,7 +44,7 @@ const getClasses = (query, hostname) =>
     const keyword = query?.keyword ? query.keyword : "";
     const category_id = query?.category_id ? query.category_id : 0;
     const level_id = query?.level_id ? query.level_id : 0;
-    const price = query?.price ? query.price : 0;
+    const price = query?.price ? query.price : 9999999;
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const offset = limit * (page - 1);
