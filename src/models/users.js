@@ -102,7 +102,7 @@ const getUserById = (query, hostname) => {
   });
 };
 
-  const getClassByUser = (query, hostname) =>
+const getClassByUser = (query, hostname) =>
   new Promise((resolve, reject) => {
     const keyword = query?.keyword ? query.keyword : "";
     const category_id = query?.category_id ? query.category_id : 0;
@@ -112,14 +112,14 @@ const getUserById = (query, hostname) => {
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const offset = limit * (page - 1);
-    const queryString = `SELECT * FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id WHERE c.name LIKE "%${keyword}%" AND c.category_id >= ? AND c.level_id >= ? AND c.pricing <= ? AND uc.user_id >= ? LIMIT ? OFFSET ?`;
+    const queryString = `SELECT u.name AS student, c.name AS class_name, ca.name AS category, l.name AS level, c.pricing AS price FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE c.name LIKE "%${keyword}%" AND c.category_id >= ? AND c.level_id >= ? AND c.pricing >= ? AND uc.user_id >= ? LIMIT ? OFFSET ?`;
     db.query(
       queryString,
       [category_id, level_id, price, user_id, limit, offset],
       (error, result) => {
         if (error) return reject(error);
         if (!result.length) return reject(404);
-        const queryCountTotal = `SELECT COUNT(id) AS total FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id WHERE c.name LIKE "%${keyword}%" AND c.category_id = ? AND c.level_id >= ? AND c.pricing <= ? AND uc.user_id = ?`;
+        const queryCountTotal = `SELECT COUNT(c.id) AS total FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id WHERE c.name LIKE "%${keyword}%" AND c.category_id = ? AND c.level_id >= ? AND c.pricing >= ? AND uc.user_id = ?`;
         db.query(
           queryCountTotal,
           [category_id, level_id, price, user_id],
