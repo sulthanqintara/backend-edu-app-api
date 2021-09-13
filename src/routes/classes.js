@@ -17,6 +17,7 @@ classRouter.post(
   authMiddleware.authUser,
   classHandler.applyNewClass
 );
+classRouter.get("/progress", classHandler.getProgressByUser);
 classRouter.get("/", classHandler.getClasses);
 classRouter.get("/:id", classHandler.getClassById);
 classRouter.patch(

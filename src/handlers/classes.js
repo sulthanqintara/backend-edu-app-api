@@ -62,6 +62,13 @@ const deleteClass = (req, res) => {
     .catch((err) => responseHelper.error(res, 500, err.message));
 };
 
+const getProgressByUser = (req, res) => {
+  const { query } = req;
+  classModel.getProgressByUser(query)
+  .then((result) => responseHelper.success(res, 201, result))
+  .catch((err) => responseHelper.error(res, 500, err.message));
+}
+
 module.exports = {
   addNewClass,
   applyNewClass,
@@ -69,4 +76,5 @@ module.exports = {
   getClassById,
   updateClassById,
   deleteClass,
+  getProgressByUser,
 };
