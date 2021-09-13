@@ -19,6 +19,7 @@ const signIn = ({ email, password }) => {
           email: result[0].email,
           phone: result[0].phone,
           role_id: result[0].role_id,
+          image: result[0].image,
         };
         const payload = {
           name: result[0].name,
