@@ -9,7 +9,8 @@ const addNewSubject = (req, res) => {
 }
 
 const getAllSubjects = (req, res) => {
-    subjectModel.getAllSubjects()
+    const { params } = req;
+    subjectModel.getAllSubjects(params.id)
     .then((result) => responseHelper.success(res, 200, result))
     .catch((err) => responseHelper.error(res, 500, err.message))
 }
