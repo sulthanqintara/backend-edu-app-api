@@ -45,11 +45,14 @@ const getClassByUser = (req, res) => {
           prevPage,
           nextPage,
         };
-        responseHelper.success(res, 201, info);
+        responseHelper.success(res, 200, info);
       }
     )
-    .catch((err) => responseHelper.error(res, 500, err));
-}
+    .catch((err) => {
+      if (err === 404) responseHelper.error(res, 404, "Data not found.");
+      else responseHelper.error(res, 500, err)
+    });
+};
 
 module.exports = {
   updatePassword,
