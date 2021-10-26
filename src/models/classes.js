@@ -53,8 +53,9 @@ const getClasses = (query, hostname) =>
       queryString,
       [category_id, level_id, price, limit, offset],
       (error, result) => {
-        if (error) return reject(error);
-        if (!result.length) return reject(404);
+        if (error) return reject({ status: 500, msg: error.message });
+        if (!result.length)
+          return reject({ status: 404, msg: "Class not found!" });
         const queryCountTotal = `SELECT COUNT(id) AS total FROM classes WHERE name LIKE "%${keyword}%" AND category_id = ? AND level_id <= ? AND pricing <= ?`;
         db.query(
           queryCountTotal,
@@ -134,7 +135,7 @@ const getProgressByUser = (query) => {
         if (error) return reject(error);
         const countData = countResult[0].normal_count;
         const notNullData = notNullResult[0].count_null;
-        const overallProgress = ((countData/notNullData) * 100);
+        const overallProgress = (countData / notNullData) * 100;
         console.log(overallProgress);
         return resolve(overallProgress);
       });
