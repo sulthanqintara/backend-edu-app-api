@@ -9,10 +9,10 @@ const addNewSubject = (body) =>
     });
   });
 
-const getAllSubjects = () =>
+const getAllSubjects = (id) =>
   new Promise((resolve, reject) => {
-    const queryString = `SELECT s.name AS "subject_name", s.subject_date AS "date", s.start_time, s.end_time, c.name AS "class_name" FROM subjects s JOIN classes c ON s.class_id = c.id`;
-    db.query(queryString, (err, result) => {
+    const queryString = `SELECT s.name AS "subject_name", s.subject_date AS "date", c.name AS "class_name" FROM subjects s JOIN classes c ON s.class_id = c.id WHERE c.id = ?`;
+    db.query(queryString, id, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
     });

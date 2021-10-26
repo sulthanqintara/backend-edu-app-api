@@ -11,7 +11,7 @@ subjectRouter.post(
 );
 subjectRouter.post("/scoring", authMiddleware.checkToken, authMiddleware.authFacilitator, subjectHandler.addScoring);
 subjectRouter.get("/scoring", subjectHandler.getAverageScore);
-subjectRouter.get("/", subjectHandler.getAllSubjects);
+subjectRouter.get("/classes/:id", subjectHandler.getAllSubjects);
 
 subjectRouter.get("/:id", subjectHandler.getSubjectById);
 
