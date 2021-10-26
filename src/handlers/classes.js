@@ -35,7 +35,7 @@ const getClasses = (req, res) => {
         responseHelper.success(res, 200, info);
       }
     )
-    .catch((err) => responseHelper.error(res, 500, err));
+    .catch(({ status, msg }) => responseHelper.error(res, status, msg));
 };
 
 const getClassById = (req, res) => {
@@ -64,10 +64,11 @@ const deleteClass = (req, res) => {
 
 const getProgressByUser = (req, res) => {
   const { query } = req;
-  classModel.getProgressByUser(query)
-  .then((result) => responseHelper.success(res, 200, result))
-  .catch((err) => responseHelper.error(res, 500, err.message));
-}
+  classModel
+    .getProgressByUser(query)
+    .then((result) => responseHelper.success(res, 201, result))
+    .catch((err) => responseHelper.error(res, 500, err.message));
+};
 
 module.exports = {
   addNewClass,
