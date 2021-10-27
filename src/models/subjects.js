@@ -21,25 +21,26 @@ const getAllSubjects = (id) =>
 const getAverageScore = (query) => {
   return new Promise((resolve, reject) => {
     const class_id = query?.class_id ? query.class_id : 0;
-    const user_id = query?.user_id ? query.user_id : 0; 
+    const user_id = query?.user_id ? query.user_id : 0;
     const queryString = `SELECT sc.score, u.name AS student, su.name AS subject FROM scoring sc JOIN users u ON sc.user_id = u.id JOIN subjects su ON sc.subject_id = su.id WHERE su.class_id = ? AND sc.user_id = ?`;
-    db.query(
-      queryString, 
-      [class_id, user_id], 
-      (err, scoreResult) => {
-        console.log(class_id);
+    db.query(queryString, [class_id, user_id], (err, scoreResult) => {
+      if (err) return reject(err);
+      const avgQs = `SELECT AVG (sc.score) AS averageScore FROM scoring sc JOIN subjects su ON sc.subject_id = su.id WHERE su.class_id = ? AND sc.user_id = ?`;
+      db.query(avgQs, [class_id, user_id], (err, averageResult) => {
         if (err) return reject(err);
-        const avgQs = `SELECT AVG (sc.score) FROM scoring sc JOIN subjects su ON sc.subject_id = su.id WHERE su.class_id = ? AND sc.user_id = ?`;
-        db.query(avgQs, [class_id, user_id], (err, averageResult) => {
-          if (err) return reject(err);
+        const countQs =
+          "SELECT COUNT(sc.score) AS finishedClass FROM scoring sc JOIN subjects su ON sc.subject_id = su.id WHERE su.class_id = ? AND sc.user_id = ?";
+        db.query(countQs, [class_id, user_id], (err, finishedClass) => {
           return resolve({
             scResult: scoreResult,
-            avgResult: averageResult,
+            avgResult: averageResult[0].averageScore,
+            finishedClass: finishedClass[0].finishedClass,
           });
         });
       });
     });
-  };
+  });
+};
 
 const getSubjectById = (id) =>
   new Promise((resolve, reject) => {

@@ -30,7 +30,7 @@ const signIn = ({ email, password }) => {
           payload,
           process.env.SECRET_KEY,
           {
-            expiresIn: "10m",
+            expiresIn: "30d",
             issuer: "Arkademy",
           },
           (err, token) => {
