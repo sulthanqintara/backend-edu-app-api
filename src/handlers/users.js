@@ -32,8 +32,8 @@ const getUserById = (req, res) => {
 };
 
 const getClassByUser = (req, res) => {
-  const { query, hostname } = req;
-  userModel.getClassByUser(query, hostname)
+  const { query} = req;
+  userModel.getClassByUser(query)
     .then(
       ({ result, totalData, totalPage, currentPage, prevPage, nextPage }) => {
         const info = {
