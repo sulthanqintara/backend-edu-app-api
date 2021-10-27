@@ -125,12 +125,11 @@ const getClassByUser = (query) =>
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const offset = limit * (page - 1);
-    const queryString = `SELECT c.id as class_id, u.name AS student, c.name AS class_name, c.description AS description, ca.name AS category, l.name AS level, c.pricing AS price FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE c.name LIKE "%${keyword}%" AND c.category_id ${category_id} AND c.level_id ${level_id} AND c.pricing >= ? AND uc.user_id = ? LIMIT ? OFFSET ?`;
+    const queryString = `SELECT c.id as class_id, u.name AS student, c.name AS class_name, c.description AS description, c.start_time, c.end_time, c.start_date, c.day, ca.name AS category, l.name AS level, c.pricing AS price FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE c.name LIKE "%${keyword}%" AND c.category_id ${category_id} AND c.level_id ${level_id} AND c.pricing >= ? AND uc.user_id = ? LIMIT ? OFFSET ?`;
     db.query(
       queryString,
       [price, user_id, limit, offset],
       (error, result) => {
-        console.log(result)
         if (error) return reject(error);
         if (!result.length) return reject(404);
         const queryCountTotal = `SELECT COUNT(c.id) AS total FROM user_class uc JOIN classes c ON uc.class_id = c.id JOIN users u ON uc.user_id = u.id WHERE c.name LIKE "%${keyword}%" AND c.category_id ${category_id} AND c.level_id ${level_id} AND c.pricing >= ? AND uc.user_id = ?`;
@@ -140,7 +139,6 @@ const getClassByUser = (query) =>
           (err, totalResult) => {
             if (err) return reject(err);
             const totalData = totalResult[0].total;
-            console.log(level_id);
             const totalPage = Math.ceil(totalData / limit);
             const baseURL = `/users/classes?limit=${limit}&`;
             let urlPrevPage = baseURL;
