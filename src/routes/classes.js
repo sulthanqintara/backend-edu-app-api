@@ -4,10 +4,10 @@ const authMiddleware = require("../middlewares/auth");
 const uploadMiddleware = require("../middlewares/upload");
 
 /* http://localhost:8000/classes */
-classRouter.get("/progress", classHandler.getProgressByUser);
-classRouter.get("/", classHandler.getClasses);
-classRouter.get("/:id", classHandler.getClassById);
 classRouter.get("/day", classHandler.getClassByDay);
+classRouter.get("/progress", classHandler.getProgressByUser);
+classRouter.get("/:id", classHandler.getClassById);
+classRouter.get("/", classHandler.getClasses);
 classRouter.post(
   "/",
   authMiddleware.checkToken,
