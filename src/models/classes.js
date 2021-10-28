@@ -146,7 +146,6 @@ const getProgressByUser = (query) => {
 const getClassByDay = (query) => {
   return new Promise((resolve, reject) => {
     const day = query?.day ? query.day : "";
-    console.log('asdd');
     const queryString = query?.day ? `SELECT * FROM classes WHERE day = ?` : `SELECT * FROM classes`;
     db.query(queryString, day, (err, result) => {
       console.log(result);
