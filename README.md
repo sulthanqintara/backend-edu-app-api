@@ -40,17 +40,16 @@ You'll need to run
 ```
 node index
 ```
-The application will run on the designated port. Since we used the 8000 port to run the backend, it should run on [http://localhost:8000/](http://localhost:8000/).
+The application will run on the designated port. Since we used the 8000 port to run the backend, it should run on [https://nodejs-eduapp-b-23.herokuapp.com/](https://nodejs-eduapp-b-23.herokuapp.com/).
 <br>
 
 ### **AVAILABLE ROUTES**
 ---
 There are four main routes, with each route stemming from the base route in this application. 
-- [("/")](http://localhost:8000/) is the base route. 
-- [("/auth")](http://localhost:8000/auth) is the route which handles anything related to authentication (Login, Register, Logout, Forgot Password). 
-- [("/users")](http://localhost:8000/users) handles requests involving user data, such as profile. 
-- [("/classes")](http://localhost:8000/classes) manages requests related to the classes available at the EduApp. 
-- And lastly, [("/subjects")](http://localhost:8000/subjects) deals with the subjects available within a class, as well as grading students' scores.
+- [("/auth")](https://nodejs-eduapp-b-23.herokuapp.com//auth) is the route which handles anything related to authentication (Login, Register, Logout, Forgot Password). 
+- [("/users")](https://nodejs-eduapp-b-23.herokuapp.com/users) handles requests involving user data, such as profile. 
+- [("/classes")](https://nodejs-eduapp-b-23.herokuapp.com/classes) manages requests related to the classes available at the EduApp. 
+- And lastly, [("/subjects")](https://nodejs-eduapp-b-23.herokuapp.com/subjects) deals with the subjects available within a class, as well as grading students' scores.
 
 
 ### **DEMO**
