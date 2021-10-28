@@ -4,7 +4,6 @@ const authMiddleware = require("../middlewares/auth");
 const uploadMiddleware = require("../middlewares/upload");
 
 /* http://localhost:8000/users */
-userRouter.get("/", authMiddleware.checkToken, userHandler.getUserById);
 userRouter.patch(
   "/update-password",
   authMiddleware.checkToken,
@@ -16,6 +15,8 @@ userRouter.patch(
   uploadMiddleware.upload.single("image"),
   userHandler.editUser
 );
-userRouter.get('/classes/', userHandler.getClassByUser);
+userRouter.get("/classes/", userHandler.getClassByUser);
+userRouter.get("/facilitator-classes/", userHandler.getClassFacilitator);
+userRouter.get("/", authMiddleware.checkToken, userHandler.getUserById);
 
 module.exports = userRouter;
