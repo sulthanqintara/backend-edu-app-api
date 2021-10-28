@@ -32,8 +32,9 @@ const getUserById = (req, res) => {
 };
 
 const getClassByUser = (req, res) => {
-  const { query} = req;
-  userModel.getClassByUser(query)
+  const { query } = req;
+  userModel
+    .getClassByUser(query)
     .then(
       ({ result, totalData, totalPage, currentPage, prevPage, nextPage }) => {
         const info = {
@@ -50,7 +51,30 @@ const getClassByUser = (req, res) => {
     )
     .catch((err) => {
       if (err === 404) responseHelper.error(res, 404, "Data not found.");
-      else responseHelper.error(res, 500, err)
+      else responseHelper.error(res, 500, err);
+    });
+};
+const getClassFacilitator = (req, res) => {
+  const { query } = req;
+  userModel
+    .getClassFacilitator(query)
+    .then(
+      ({ result, totalData, totalPage, currentPage, prevPage, nextPage }) => {
+        const info = {
+          data: result,
+          totalData,
+          totalData,
+          totalPage,
+          currentPage,
+          prevPage,
+          nextPage,
+        };
+        responseHelper.success(res, 200, info);
+      }
+    )
+    .catch((err) => {
+      if (err === 404) responseHelper.error(res, 404, "Data not found.");
+      else responseHelper.error(res, 500, err);
     });
 };
 
@@ -59,4 +83,5 @@ module.exports = {
   editUser,
   getUserById,
   getClassByUser,
+  getClassFacilitator,
 };
