@@ -70,6 +70,14 @@ const getProgressByUser = (req, res) => {
     .catch((err) => responseHelper.error(res, 500, err.message));
 };
 
+const getClassByDay = (req, res) => {
+  const { query } = req;
+  console.log(query);
+  classModel.getClassByDay(query)
+  .then((result) => responseHelper.success(res, 201, result))
+  .catch((err) => responseHelper.error(res, 500, err.message));
+}
+
 module.exports = {
   addNewClass,
   applyNewClass,
@@ -78,4 +86,5 @@ module.exports = {
   updateClassById,
   deleteClass,
   getProgressByUser,
+  getClassByDay,
 };
