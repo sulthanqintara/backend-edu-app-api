@@ -40,7 +40,7 @@ You'll need to run
 ```
 node index
 ```
-The application will run on the designated port. Since we used the 8000 port to run the backend, it should run on [https://nodejs-eduapp-b-23.herokuapp.com/](https://nodejs-eduapp-b-23.herokuapp.com/).
+The application will run on the designated port. It should run on [https://nodejs-eduapp-b-23.herokuapp.com/](https://nodejs-eduapp-b-23.herokuapp.com/).
 <br>
 
 ### **AVAILABLE ROUTES**
