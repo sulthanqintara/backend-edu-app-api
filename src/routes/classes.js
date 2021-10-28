@@ -5,6 +5,7 @@ const uploadMiddleware = require("../middlewares/upload");
 
 /* http://localhost:8000/classes */
 classRouter.get("/day", classHandler.getClassByDay);
+classRouter.get("/day-others", classHandler.getClassByDayOther);
 classRouter.get("/progress", classHandler.getProgressByUser);
 classRouter.get("/:id", classHandler.getClassById);
 classRouter.get("/", classHandler.getClasses);

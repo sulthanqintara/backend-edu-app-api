@@ -77,6 +77,13 @@ const getClassByDay = (req, res) => {
   .catch((err) => responseHelper.error(res, 500, err.message));
 }
 
+const getClassByDayOther = (req, res) => {
+  const { query } = req;
+  classModel.getClassByDayOther(query)
+  .then((result) => responseHelper.success(res, 200, result))
+  .catch((err) => responseHelper.error(res, 500, err.message));
+}
+
 module.exports = {
   addNewClass,
   applyNewClass,
@@ -86,4 +93,5 @@ module.exports = {
   deleteClass,
   getProgressByUser,
   getClassByDay,
+  getClassByDayOther,
 };

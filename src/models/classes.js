@@ -159,6 +159,17 @@ const getClassByDay = (query) => {
   })
 }
 
+const getClassByDayOther = (query) => {
+  return new Promise((resolve, reject) => {
+    const day = query?.day ? query.day : "";
+    let queryString = query?.day ? `SELECT * FROM classes c WHERE day = "${day}"` : `SELECT * FROM classes`;
+    db.query(queryString, (err, result) => {
+      if (err) return reject(err);
+      return resolve(result);
+    })
+  })
+}
+
 module.exports = {
   addNewClass,
   applyNewClass,
@@ -168,4 +179,5 @@ module.exports = {
   deleteClass,
   getProgressByUser,
   getClassByDay,
+  getClassByDayOther,
 };
