@@ -146,10 +146,13 @@ const getProgressByUser = (query) => {
 const getClassByDay = (query) => {
   return new Promise((resolve, reject) => {
     const day = query?.day ? query.day : "";
-    console.log('asdd');
-    const queryString = query?.day ? `SELECT * FROM classes WHERE day = ?` : `SELECT * FROM classes`;
-    db.query(queryString, day, (err, result) => {
-      console.log(result);
+    const user_id = query?.user_id ? query.user_id : 0;
+    let queryBaseString = `SELECT * FROM classes c JOIN user_class uc ON c.id = uc.class_id `
+    if (day || user_id) queryBaseString += `WHERE `
+    if (day) queryBaseString += `c.day = "${day}" `
+    if (day && user_id) queryBaseString += `AND uc.user_id = ${user_id}`
+    else if (user_id) queryBaseString += `uc.user_id = ${user_id} `
+    db.query(queryBaseString, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
     })

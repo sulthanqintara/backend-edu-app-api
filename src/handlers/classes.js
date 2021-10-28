@@ -72,7 +72,6 @@ const getProgressByUser = (req, res) => {
 
 const getClassByDay = (req, res) => {
   const { query } = req;
-  console.log('asd');
   classModel.getClassByDay(query)
   .then((result) => responseHelper.success(res, 200, result))
   .catch((err) => responseHelper.error(res, 500, err.message));
