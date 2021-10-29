@@ -99,7 +99,7 @@ const getClassById = (id) =>
 
 const getStudentsOfClass = (id) =>
   new Promise((resolve, reject) => {
-    const queryString = `SELECT u.name AS "student_name", u.image AS student_image, r.name AS "role", c.name AS "course_name", ca.name AS "category", c.start_date, c.start_time, c.end_time, l.name AS level, c.pricing, c.description FROM users u JOIN user_class uc ON u.id = uc.user_id JOIN classes c ON uc.class_id = c.id JOIN roles r ON u.role_id = r.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE uc.class_id = ?`;
+    const queryString = `SELECT u.id AS student_id, u.name AS "student_name", u.image AS student_image, r.name AS "role", c.name AS "course_name", ca.name AS "category", c.start_date, c.start_time, c.end_time, l.name AS level, c.pricing, c.description FROM users u JOIN user_class uc ON u.id = uc.user_id JOIN classes c ON uc.class_id = c.id JOIN roles r ON u.role_id = r.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE uc.class_id = ?`;
     db.query(queryString, id, (error, result) => {
       if (error) return reject(error);
       return resolve(result);
