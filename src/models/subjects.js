@@ -78,7 +78,7 @@ const addScoring = (body) =>
     let status_id = 0;
     status_id = score > 75 ? (status_id = 2) : (status_id = 3);
     const queryString =
-      "INSERT INTO scoring SET user_id = ?, subject_id = ?, score = ?, status_id = ?";
+      "INSERT INTO scoring SET user_id = ?, subject_id = ?, score = ?";
     db.query(
       queryString,
       [user_id, subject_id, score, status_id],
