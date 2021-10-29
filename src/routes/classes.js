@@ -8,6 +8,7 @@ classRouter.get("/day", classHandler.getClassByDay);
 classRouter.get("/day-others", classHandler.getClassByDayOther);
 classRouter.get("/progress", classHandler.getProgressByUser);
 classRouter.get("/:id", classHandler.getClassById);
+classRouter.get("/students/:id", classHandler.getStudentsOfClass);
 classRouter.get("/", classHandler.getClasses);
 classRouter.post(
   "/",

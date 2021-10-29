@@ -84,6 +84,13 @@ const getClassByDayOther = (req, res) => {
   .catch((err) => responseHelper.error(res, 500, err.message));
 }
 
+const getStudentsOfClass = (req, res) => {
+  const { params } = req;
+  classModel.getStudentsOfClass(params.id)
+  .then((result) => responseHelper.success(res, 200, result))
+  .catch((err) => responseHelper.error(res, 500, err.message));
+}
+
 module.exports = {
   addNewClass,
   applyNewClass,
@@ -94,4 +101,5 @@ module.exports = {
   getProgressByUser,
   getClassByDay,
   getClassByDayOther,
+  getStudentsOfClass,
 };
