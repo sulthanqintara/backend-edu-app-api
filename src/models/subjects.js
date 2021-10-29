@@ -22,7 +22,7 @@ const getAverageScore = (query) => {
   return new Promise((resolve, reject) => {
     const class_id = query?.class_id ? query.class_id : 0;
     const user_id = query?.user_id ? query.user_id : 0;
-    const queryString = `SELECT sc.score, u.name AS student, su.name AS subject, su.subject_date AS "date", c.name AS "class_name" FROM scoring sc JOIN users u ON sc.user_id = u.id JOIN subjects su ON sc.subject_id = su.id JOIN classes c ON su.class_id = c.id WHERE su.class_id = ? AND sc.user_id = ?`;
+    const queryString = `SELECT sc.score, u.name AS student, sc.subject_id, su.name AS subject, su.subject_date AS "date", c.name AS "class_name" FROM scoring sc JOIN users u ON sc.user_id = u.id JOIN subjects su ON sc.subject_id = su.id JOIN classes c ON su.class_id = c.id WHERE su.class_id = ? AND sc.user_id = ?`;
     db.query(queryString, [class_id, user_id], (err, scoreResult) => {
       if (err) return reject(err);
       const avgQs = `SELECT AVG (sc.score) AS averageScore FROM scoring sc JOIN subjects su ON sc.subject_id = su.id WHERE su.class_id = ? AND sc.user_id = ?`;
@@ -78,7 +78,7 @@ const addScoring = (body) =>
     let status_id = 0;
     status_id = score > 75 ? (status_id = 2) : (status_id = 3);
     const queryString =
-      "INSERT INTO scoring SET user_id = ?, subject_id = ?, score = ?, status_id = ?";
+      "INSERT INTO scoring SET user_id = ?, subject_id = ?, score = ?";
     db.query(
       queryString,
       [user_id, subject_id, score, status_id],
