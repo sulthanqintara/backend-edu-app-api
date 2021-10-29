@@ -49,51 +49,43 @@ const getClasses = (query, hostname) =>
     const limit = Number(query.limit) || 10;
     const offset = limit * (page - 1);
     const queryString = `SELECT * FROM classes WHERE name LIKE "%${keyword}%" AND category_id ${category_id} AND level_id ${level_id} AND pricing <= ? LIMIT ? OFFSET ?`;
-    db.query(
-      queryString,
-      [price, limit, offset],
-      (error, result) => {
-        if (error) return reject({ status: 500, msg: error.message });
-        if (!result.length)
-          return reject({ status: 404, msg: "Class not found!" });
-        const queryCountTotal = `SELECT COUNT(id) AS total FROM classes WHERE name LIKE "%${keyword}%" AND category_id ${category_id} AND level_id ${level_id} AND pricing <= ?`;
-        db.query(
-          queryCountTotal,
-          [price],
-          (err, totalResult) => {
-            if (err) return reject(err);
-            const totalData = totalResult[0].total;
-            const totalPage = Math.ceil(totalData / limit);
-            const baseURL = `/classes?limit=${limit}&`;
-            let urlPrevPage = baseURL;
-            let urlNextPage = baseURL;
-            query.keyword &&
-              ((urlPrevPage = urlPrevPage + `keyword=${keyword}&`),
-              (urlNextPage = urlNextPage + `keyword=${keyword}&`));
-            query.category_id &&
-              ((urlPrevPage = urlPrevPage + `category_id${category_id}&`),
-              (urlNextPage = urlNextPage + `category_id${category_id}&`));
-            query.level_id &&
-              ((urlPrevPage = urlPrevPage + `level_id${level_id}&`),
-              (urlNextPage = urlNextPage + `level_id${level_id}&`));
-            query.price &&
-              ((urlPrevPage = urlPrevPage + `price=${price}&`),
-              (urlNextPage = urlNextPage + `price=${price}&`));
-            const prevPage = page > 1 ? urlPrevPage + `page=${page - 1}` : null;
-            const nextPage =
-              page < totalPage ? urlNextPage + `page=${page + 1}` : null;
-            return resolve({
-              result,
-              totalData,
-              totalPage,
-              currentPage: page,
-              prevPage,
-              nextPage,
-            });
-          }
-        );
-      }
-    );
+    db.query(queryString, [price, limit, offset], (error, result) => {
+      if (error) return reject({ status: 500, msg: error.message });
+      if (!result.length)
+        return reject({ status: 404, msg: "Class not found!" });
+      const queryCountTotal = `SELECT COUNT(id) AS total FROM classes WHERE name LIKE "%${keyword}%" AND category_id ${category_id} AND level_id ${level_id} AND pricing <= ?`;
+      db.query(queryCountTotal, [price], (err, totalResult) => {
+        if (err) return reject(err);
+        const totalData = totalResult[0].total;
+        const totalPage = Math.ceil(totalData / limit);
+        const baseURL = `/classes?limit=${limit}&`;
+        let urlPrevPage = baseURL;
+        let urlNextPage = baseURL;
+        query.keyword &&
+          ((urlPrevPage = urlPrevPage + `keyword=${keyword}&`),
+          (urlNextPage = urlNextPage + `keyword=${keyword}&`));
+        query.category_id &&
+          ((urlPrevPage = urlPrevPage + `category_id${category_id}&`),
+          (urlNextPage = urlNextPage + `category_id${category_id}&`));
+        query.level_id &&
+          ((urlPrevPage = urlPrevPage + `level_id${level_id}&`),
+          (urlNextPage = urlNextPage + `level_id${level_id}&`));
+        query.price &&
+          ((urlPrevPage = urlPrevPage + `price=${price}&`),
+          (urlNextPage = urlNextPage + `price=${price}&`));
+        const prevPage = page > 1 ? urlPrevPage + `page=${page - 1}` : null;
+        const nextPage =
+          page < totalPage ? urlNextPage + `page=${page + 1}` : null;
+        return resolve({
+          result,
+          totalData,
+          totalPage,
+          currentPage: page,
+          prevPage,
+          nextPage,
+        });
+      });
+    });
   });
 
 const getClassById = (id) =>
@@ -105,9 +97,9 @@ const getClassById = (id) =>
     });
   });
 
-  const getStudentsOfClass = (id) =>
+const getStudentsOfClass = (id) =>
   new Promise((resolve, reject) => {
-    const queryString = `SELECT u.name AS "student_name", r.name AS "role", c.name AS "course_name", ca.name AS "category", c.start_date, c.start_time, c.end_time, l.name AS level, c.pricing, c.description FROM users u JOIN user_class uc ON u.id = uc.user_id JOIN classes c ON uc.class_id = c.id JOIN roles r ON u.role_id = r.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE uc.class_id = ?`;
+    const queryString = `SELECT u.name AS "student_name", u.image AS student_image, r.name AS "role", c.name AS "course_name", ca.name AS "category", c.start_date, c.start_time, c.end_time, l.name AS level, c.pricing, c.description FROM users u JOIN user_class uc ON u.id = uc.user_id JOIN classes c ON uc.class_id = c.id JOIN roles r ON u.role_id = r.id JOIN categories ca ON c.category_id = ca.id JOIN levels l ON c.level_id = l.id WHERE uc.class_id = ?`;
     db.query(queryString, id, (error, result) => {
       if (error) return reject(error);
       return resolve(result);
@@ -156,28 +148,30 @@ const getClassByDay = (query) => {
   return new Promise((resolve, reject) => {
     const day = query?.day ? query.day : "";
     const user_id = query?.user_id ? query.user_id : 0;
-    let queryBaseString = `SELECT * FROM classes c JOIN user_class uc ON c.id = uc.class_id `
-    if (day || user_id) queryBaseString += `WHERE `
-    if (day) queryBaseString += `c.day = "${day}" `
-    if (day && user_id) queryBaseString += `AND uc.user_id = ${user_id}`
-    else if (user_id) queryBaseString += `uc.user_id = ${user_id} `
+    let queryBaseString = `SELECT * FROM classes c JOIN user_class uc ON c.id = uc.class_id `;
+    if (day || user_id) queryBaseString += `WHERE `;
+    if (day) queryBaseString += `c.day = "${day}" `;
+    if (day && user_id) queryBaseString += `AND uc.user_id = ${user_id}`;
+    else if (user_id) queryBaseString += `uc.user_id = ${user_id} `;
     db.query(queryBaseString, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
-    })
-  })
-}
+    });
+  });
+};
 
 const getClassByDayOther = (query) => {
   return new Promise((resolve, reject) => {
     const day = query?.day ? query.day : "";
-    let queryString = query?.day ? `SELECT * FROM classes c WHERE day = "${day}"` : `SELECT * FROM classes`;
+    let queryString = query?.day
+      ? `SELECT * FROM classes c WHERE day = "${day}"`
+      : `SELECT * FROM classes`;
     db.query(queryString, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
-    })
-  })
-}
+    });
+  });
+};
 
 module.exports = {
   addNewClass,
