@@ -33,9 +33,25 @@ const addNewClass = (file, body) =>
 const applyNewClass = (body) =>
   new Promise((resolve, reject) => {
     const queryString = "INSERT INTO user_class SET ?";
+    let classId = body?.class_id ? body.class_id : 0;
+    let userId = body?.user_id ? body.user_id : 0;
     db.query(queryString, body, (err, result) => {
       if (err) return reject(err);
-      return resolve(result);
+      const getSubjectId = "SELECT id FROM subjects WHERE class_id = ?";
+      db.query(getSubjectId, classId, (err, subjects) => {
+        const stringInsertScore =
+          "INSERT INTO scoring SET user_id = ?, subject_id = ?, score = ?";
+        const subjectLength = subjects.length;
+        for (let x = 0; x < subjectLength; x++) {
+          const subjectId = subjects[x]?.id ? subjects[x]?.id : 0;
+          db.query(
+            stringInsertScore,
+            [userId, subjectId, null],
+            (err, res) => {}
+          );
+        }
+        return resolve("Class applied and score added");
+      });
     });
   });
 
