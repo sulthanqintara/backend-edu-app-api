@@ -11,7 +11,7 @@ const addNewSubject = (body) =>
 
 const getAllSubjects = (id) =>
   new Promise((resolve, reject) => {
-    const queryString = `SELECT s.name AS "subject_name", s.subject_date AS "date", c.name AS "class_name" FROM subjects s JOIN classes c ON s.class_id = c.id WHERE c.id = ?`;
+    const queryString = `SELECT s.id, s.name AS "subject_name", s.subject_date AS "date", c.name AS "class_name", s.isFinished FROM subjects s JOIN classes c ON s.class_id = c.id WHERE c.id = ?`;
     db.query(queryString, id, (err, result) => {
       if (err) return reject(err);
       return resolve(result);
