@@ -46,7 +46,6 @@ const authFacilitator = (req, res, next) => {
   jwt.verify(token, process.env.SECRET_KEY, (err, payload) => {
     if (err) return new Error(responseHelper.error(res, 401, err));
     req.payload = payload;
-    console.log(payload);
     if (payload.role_id !== 1)
       return new Error(responseHelper.error(res, 403, "Not a Facilitator!"));
     next();

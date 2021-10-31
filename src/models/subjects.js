@@ -89,12 +89,14 @@ const addScoring = (body) =>
     );
   });
 
-const updateScoring = (body, id) =>
+const updateScoring = (body) =>
   new Promise((resolve, reject) => {
-    const queryString = "UPDATE scoring SET ? WHERE id = ?";
-    db.query(queryString, [body, id], (err, result) => {
+    const id = body?.id ? body.id : 0;
+    const score = body?.score ? body.score : 0;
+    const queryString = "UPDATE scoring SET score = ? WHERE id = ?";
+    db.query(queryString, [score, id], (err, result) => {
       if (err) return reject(err);
-      return resolve(result);
+      return resolve("Score Updated");
     });
   });
 
