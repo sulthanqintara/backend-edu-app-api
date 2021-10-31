@@ -63,6 +63,13 @@ const addScoring = (req, res) => {
     .then((data) => responseHelper.success(res, 201, data))
     .catch((err) => responseHelper.error(res, 500, err.message));
 };
+const updateScore = (req, res) => {
+  const { body } = req;
+  subjectModel
+    .updateScoring(body)
+    .then((data) => responseHelper.success(res, 200, data))
+    .catch((err) => responseHelper.error(res, 500, err.message));
+};
 
 module.exports = {
   addNewSubject,
@@ -72,4 +79,5 @@ module.exports = {
   deleteSubject,
   addScoring,
   getAverageScore,
+  updateScore,
 };

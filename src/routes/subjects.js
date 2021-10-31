@@ -9,7 +9,18 @@ subjectRouter.post(
   authMiddleware.authFacilitator,
   subjectHandler.addNewSubject
 );
-subjectRouter.post("/scoring", authMiddleware.checkToken, authMiddleware.authFacilitator, subjectHandler.addScoring);
+subjectRouter.post(
+  "/scoring",
+  authMiddleware.checkToken,
+  authMiddleware.authFacilitator,
+  subjectHandler.addScoring
+);
+subjectRouter.patch(
+  "/scoring",
+  authMiddleware.checkToken,
+  authMiddleware.authFacilitator,
+  subjectHandler.updateScore
+);
 subjectRouter.get("/scoring", subjectHandler.getAverageScore);
 subjectRouter.get("/classes/:id", subjectHandler.getAllSubjects);
 
@@ -27,6 +38,5 @@ subjectRouter.delete(
   authMiddleware.authFacilitator,
   subjectHandler.deleteSubject
 );
-
 
 module.exports = subjectRouter;
