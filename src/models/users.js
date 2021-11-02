@@ -108,7 +108,7 @@ const getUserById = (query, hostname) => {
       else {
         return resolve({
           ...result[0],
-          image: `http://${hostname}:8000${result[0].image}`,
+          image: `${result[0].image}`,
         });
       }
     });
